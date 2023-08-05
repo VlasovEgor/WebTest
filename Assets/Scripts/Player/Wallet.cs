@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
@@ -5,8 +6,12 @@ using Zenject;
 
 public class Wallet : MonoBehaviour
 {
+    public event Action<int> OnMoneyChanged;
+
     private MoneyPool _moneyPool;
     private List<Money> _acctiveMoney = new();
+
+    private int _amountMoneySpent;
 
     private int _amountMoneyInColumn = 10;
     private float _xOffset = 0.2f;
@@ -44,6 +49,9 @@ public class Wallet : MonoBehaviour
             var money = _acctiveMoney.Last();
             _moneyPool.Despawn(money);
             _acctiveMoney.Remove(money);
+
+            _amountMoneySpent++;
+            OnMoneyChanged?.Invoke(_amountMoneySpent);
         }
     }
 }

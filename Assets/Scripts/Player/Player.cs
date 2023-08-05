@@ -1,9 +1,22 @@
+using System;
 using UnityEngine;
 
 public class Player : MonoBehaviour, IPlayer
 {
+    public event Action<int> OnMoneyChanged;
+
     [SerializeField] private Movement _movement;
     [SerializeField] private Wallet _wallet;
+
+    private void Awake()
+    {
+        _wallet.OnMoneyChanged += MoneyChanged;
+    }
+
+    private void OnDestroy()
+    {
+        _wallet.OnMoneyChanged -= MoneyChanged;
+    }
 
     public Transform GetPlayerTransfrom()
     {
@@ -23,5 +36,10 @@ public class Player : MonoBehaviour, IPlayer
     public void SpendMoney()
     {
         _wallet.SpendMoney();
+    }
+
+    private void MoneyChanged(int money)
+    {
+        OnMoneyChanged?.Invoke(money);  
     }
 }

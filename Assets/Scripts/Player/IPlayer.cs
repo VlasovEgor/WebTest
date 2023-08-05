@@ -1,9 +1,12 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 
 public interface IPlayer
 {
-    void AddMoney();
-    Transform GetPlayerTransfrom();
-    void Move(Vector3 offset);
-    void SpendMoney();
+    public event Action<int> OnMoneyChanged;
+
+    public void AddMoney();
+    public Transform GetPlayerTransfrom();
+    public void Move(Vector3 offset);
+    public void SpendMoney();
 }
